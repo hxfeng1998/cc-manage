@@ -1,0 +1,88 @@
+{
+  "providers": [
+    {
+      "name": "foxcode",
+      "website": "https://foxcode.rjj.cc",
+      "status": {
+        "url": "https://foxcode.rjj.cc/api/user/dashboard"
+      },
+      "claude": {
+        "settingsJson": "{\n  \"env\": {\n    \"ANTHROPIC_AUTH_TOKEN\": \"\",\n    \"ANTHROPIC_BASE_URL\": \"https://code.newcli.com/claude\"\n  }\n}"
+      },
+      "codex": {
+        "authJson": "{\n  \"OPENAI_API_KEY\": \"\"\n}",
+        "configToml": "model_provider = \"foxcode\"\nmodel = \"gpt-5-codex\"\nmodel_reasoning_effort = \"high\"\ndisable_response_storage = true\n\n[model_providers.foxcode]\nname = \"foxcode\"\nbase_url = \"https://code.newcli.com/v1\"\nwire_api = \"responses\"\nrequires_openai_auth = true"
+      }
+    },
+    {
+      "name": "DuckCoding",
+      "website": "https://jp.duckcoding.com",
+      "status": {
+        "url": "https://duckcoding.com/api/user/self"
+      },
+      "claude": {
+        "settingsJson": "{\n  \"env\": {\n    \"ANTHROPIC_AUTH_TOKEN\": \"\",\n    \"ANTHROPIC_BASE_URL\": \"https://jp.duckcoding.com\"\n  }\n}"
+      },
+      "codex": {
+        "authJson": "{\n  \"OPENAI_API_KEY\": \"\"\n}",
+        "configToml": "model_provider = \"duckcoding\"\nmodel = \"gpt-5.1-codex\"\nmodel_reasoning_effort = \"high\"\ndisable_response_storage = true\n\n[model_providers.duckcoding]\nname = \"duckcoding\"\nbase_url = \"https://jp.duckcoding.com/v1\"\nwire_api = \"responses\"\nrequires_openai_auth = true"
+      }
+    },
+    {
+      "name": "88Code",
+      "website": "https://www.88code.org",
+      "status": {
+        "url": "https://www.88code.org/admin-api/cc-admin/user/dashboard"
+      },
+      "claude": {
+        "settingsJson": "{\n  \"env\": {\n    \"ANTHROPIC_AUTH_TOKEN\": \"\",\n    \"ANTHROPIC_BASE_URL\": \"https://www.88code.org/api\"\n  }\n}"
+      },
+      "codex": {
+        "authJson": "{\n  \"OPENAI_API_KEY\": \"\"\n}",
+        "configToml": "model_provider = \"88code\"\nmodel = \"gpt-5.1-codex\"\nmodel_reasoning_effort = \"high\"\ndisable_response_storage = true\n\n[model_providers.88code]\nname = \"88code\"\nbase_url = \"https://www.88code.org/openai/v1\"\nwire_api = \"responses\"\nrequires_openai_auth = true"
+      }
+    },
+    {
+      "name": "IKunCode",
+      "website": "https://api.ikuncode.cc/",
+      "status": {
+        "url": "https://api.ikuncode.cc/api/user/self"
+      },
+      "claude": {
+        "settingsJson": "{\n  \"env\": {\n    \"ANTHROPIC_AUTH_TOKEN\": \"\",\n    \"ANTHROPIC_BASE_URL\": \"https://api.ikuncode.cc\"\n  }\n}"
+      },
+      "codex": {
+        "authJson": "{\n  \"OPENAI_API_KEY\": \"\"\n}",
+        "configToml": "model_provider = \"IkunCoding\"\nmodel = \"gpt-5.1-codex\"\nmodel_reasoning_effort = \"high\"\ndisable_response_storage = true\n\n[model_providers.IkunCoding]\nname = \"IkunCoding\"\nbase_url = \"https://api.ikuncode.cc/v1\"\nwire_api = \"responses\"\nrequires_openai_auth = true"
+      }
+    },
+    {
+      "name": "PackyCode",
+      "website": "https://www.packyapi.com/",
+      "status": {
+        "url": "https://www.packyapi.com/api/user/self"
+      },
+      "claude": {
+        "settingsJson": "{\n  \"env\": {\n    \"ANTHROPIC_AUTH_TOKEN\": \"\",\n    \"ANTHROPIC_BASE_URL\": \"https://www.packyapi.com\"\n  }\n}"
+      },
+      "codex": {
+        "authJson": "{\n  \"OPENAI_API_KEY\": \"\"\n}",
+        "configToml": "model_provider = \"packycode\"\nmodel = \"gpt-5.1-codex\"\nmodel_reasoning_effort = \"high\"\ndisable_response_storage = true\n\n[model_providers.packycode]\nname = \"packycode\"\nbase_url = \"https://www.packyapi.com/v1\"\nwire_api = \"responses\"\nrequires_openai_auth = true"
+      }
+    },
+    {
+      "name": "Privnode",
+      "website": "https://privnode.com/",
+      "status": {
+        "url": "https://privnode.com/api/user/self"
+      },
+      "claude": {
+        "settingsJson": "{\n  \"env\": {\n    \"ANTHROPIC_AUTH_TOKEN\": \"\",\n    \"ANTHROPIC_BASE_URL\": \"https://privnode.com\"\n  }\n}"
+      },
+      "codex": {
+        "authJson": "{\n  \"OPENAI_API_KEY\": \"\"\n}",
+        "configToml": "model_provider = \"privnode\"\nmodel = \"gpt-5.1-codex\"\nmodel_reasoning_effort = \"high\"\ndisable_response_storage = true\n\n[model_providers.privnode]\nname = \"privnode\"\nbase_url = \"https://privnode.com/v1\"\nwire_api = \"responses\"\nrequires_openai_auth = true"
+      }
+    }
+  ]
+}

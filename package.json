@@ -1,0 +1,78 @@
+{
+  "name": "cc-manage",
+  "displayName": "CC Manage",
+  "description": "统一管理 Claude/Codex API 配置，支持一键切换、余额监控和配置同步",
+  "version": "1.0.0",
+  "publisher": "cc-manage",
+  "author": {
+    "name": "feng98"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hxfeng1998/cc-manage.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hxfeng1998/cc-manage/issues"
+  },
+  "homepage": "https://github.com/hxfeng1998/cc-manage#readme",
+  "keywords": [
+    "claude",
+    "codex",
+    "api",
+    "configuration",
+    "vscode-extension"
+  ],
+  "engines": {
+    "vscode": "^1.94.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "ccManage",
+          "title": "CC Manage",
+          "icon": "media/sidebar/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "ccManage": [
+        {
+          "type": "webview",
+          "id": "ccManage.sidebar",
+          "name": "控制面板",
+          "icon": "media/sidebar/icon.svg"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts",
+    "pretest": "npm run compile",
+    "test": "node ./out/test/runTest.js",
+    "test:unit": "npm run compile && node ./out/test/unit.js",
+    "check": "npm run compile && npm run lint"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.1.0",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.94.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "@vscode/test-electron": "^2.3.0",
+    "eslint": "^8.57.0",
+    "glob": "^7.2.3",
+    "mocha": "^10.4.0",
+    "typescript": "^5.4.3"
+  }
+}

@@ -1,0 +1,25 @@
+node_modules
+out
+.vscode-test
+*.vsix
+*.log
+coverage
+.package-lock.json
+
+# Build artifacts
+*.js.map
+
+# IDE
+.vscode/settings.json
+
+# Test files
+media/sidebar/test.html
+
+# Test reports
+playwright-report/
+test-results/
+
+.claude/
+CLAUDE.md
+
+.playwright-mcp/
