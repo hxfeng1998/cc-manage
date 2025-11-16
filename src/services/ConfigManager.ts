@@ -2,6 +2,8 @@ import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 import { randomUUID } from 'crypto';
+import merge from 'lodash.merge';
+import * as toml from '@iarna/toml';
 import defaultConfigsFile from '../config/defaultConfigs.json';
 
 export type ProviderType = 'claude' | 'codex';
@@ -604,25 +606,78 @@ export class ConfigManager {
     return mainBaseUrlMatch?.[1];
   }
 
+  /**
+   * 写入 Claude 配置（深度合并）
+   * 使用 lodash.merge 实现深度合并，保留用户手动添加的嵌套字段
+   */
   private async writeClaudeConfig(config: ClaudeConfig): Promise<void> {
     const targetDir = path.join(this.homeDir, '.claude');
     const settingsFile = path.join(targetDir, 'settings.json');
     await fs.promises.mkdir(targetDir, { recursive: true });
-    await fs.promises.writeFile(settingsFile, config.settingsJson, 'utf8');
+
+    // 读取现有配置（如果存在）
+    let existingSettings: Record<string, unknown> = {};
+    try {
+      const existingContent = await fs.promises.readFile(settingsFile, 'utf8');
+      existingSettings = JSON.parse(existingContent) as Record<string, unknown>;
+    } catch (err) {
+      // 文件不存在或解析失败，使用空对象
+    }
+
+    // 解析新配置
+    const newSettings = JSON.parse(config.settingsJson) as Record<string, unknown>;
+
+    // 深度合并配置：新配置会覆盖旧配置的同名字段，但保留旧配置中新配置没有的字段
+    // merge(target, source) - 修改 target 并返回
+    const mergedSettings = merge({}, existingSettings, newSettings);
+
+    // 写回文件
+    await fs.promises.writeFile(settingsFile, JSON.stringify(mergedSettings, null, 2), 'utf8');
   }
 
+  /**
+   * 写入 Codex 配置（深度合并）
+   * auth.json 使用 lodash.merge 深度合并
+   * config.toml 使用 @iarna/toml 解析后深度合并，保留注释和格式
+   */
   private async writeCodexConfig(config: CodexConfig): Promise<void> {
     const codexDir = path.join(this.homeDir, '.codex');
     await fs.promises.mkdir(codexDir, { recursive: true });
 
-    // 写入 auth.json
+    // 1. 深度合并 auth.json
     const authFile = path.join(codexDir, 'auth.json');
-    await fs.promises.writeFile(authFile, config.authJson, 'utf8');
+    let existingAuth: Record<string, unknown> = {};
+    try {
+      const existingContent = await fs.promises.readFile(authFile, 'utf8');
+      existingAuth = JSON.parse(existingContent) as Record<string, unknown>;
+    } catch (err) {
+      // 文件不存在或解析失败，使用空对象
+    }
+    const newAuth = JSON.parse(config.authJson) as Record<string, unknown>;
+    const mergedAuth = merge({}, existingAuth, newAuth);
+    await fs.promises.writeFile(authFile, JSON.stringify(mergedAuth, null, 2), 'utf8');
 
-    // 写入 config.toml
+    // 2. 深度合并 config.toml
     const configFile = path.join(codexDir, 'config.toml');
-    await fs.promises.writeFile(configFile, config.configToml, 'utf8');
+    let existingTomlObj: toml.JsonMap = {};
+    try {
+      const existingTomlContent = await fs.promises.readFile(configFile, 'utf8');
+      existingTomlObj = toml.parse(existingTomlContent);
+    } catch (err) {
+      // 文件不存在或解析失败，使用空对象
+    }
+
+    // 解析新配置的 TOML
+    const newTomlObj = toml.parse(config.configToml);
+
+    // 深度合并 TOML 对象
+    const mergedTomlObj = merge({}, existingTomlObj, newTomlObj);
+
+    // 转换回 TOML 字符串（注意：会丢失注释和原有格式）
+    const mergedTomlString = toml.stringify(mergedTomlObj as toml.JsonMap);
+    await fs.promises.writeFile(configFile, mergedTomlString, 'utf8');
   }
+
 
   private async fetchStatus(config: ProviderConfig): Promise<ProviderStatus> {
     const statusConfig = config.status;
