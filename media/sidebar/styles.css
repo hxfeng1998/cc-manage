@@ -653,7 +653,7 @@ pre {
   }
 
   .actions button {
-    flex: 1 1 auto;
+    flex: 1 1 0px;
   }
 
   .config-actions button {
