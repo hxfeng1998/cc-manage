@@ -92,7 +92,9 @@ interface DefaultConfigFile {
   providers?: ProviderConfigInput[];
 }
 
-const DEFAULT_CONFIGS = (defaultConfigsFile as DefaultConfigFile).providers ?? [];
+const DEFAULT_CONFIGS = ((defaultConfigsFile as DefaultConfigFile).providers ?? []).sort((a, b) =>
+  a.name.localeCompare(b.name)
+);
 const FILE_VERSION = 1;
 
 export class ConfigManager {
