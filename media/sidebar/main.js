@@ -629,22 +629,6 @@
         endpoints.appendChild(row)
       })
 
-      // 查询配置状态信息（简化显示，进度条已在 header）
-      const statusBlock = document.createElement('div')
-      statusBlock.className = 'status-block'
-
-      if (!config.hasStatusConfig) {
-        const info = document.createElement('p')
-        info.className = 'status-desc'
-        info.textContent = '查询配置：未设置'
-        statusBlock.appendChild(info)
-      } else if (config.lastStatus && !config.lastStatus.ok) {
-        const errorInfo = document.createElement('p')
-        errorInfo.className = 'status error'
-        errorInfo.textContent = '查询失败'
-        statusBlock.appendChild(errorInfo)
-      }
-
       // 操作按钮区域（编辑、删除、官网）
       const actionsFooter = document.createElement('div')
       actionsFooter.className = 'actions-footer'
@@ -674,9 +658,6 @@
 
       // 将所有详细内容添加到容器中
       detailsContainer.appendChild(endpoints)
-      if (statusBlock.children.length > 0) {
-        detailsContainer.appendChild(statusBlock)
-      }
       detailsContainer.appendChild(actionsFooter)
 
       item.appendChild(header)
