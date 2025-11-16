@@ -3,6 +3,9 @@
   const AUTO_REFRESH_INTERVAL = 5 * 60 * 1000
   const REFRESH_COOLDOWN = 5000
 
+  // 从 VSCode 持久化状态中恢复折叠状态
+  const previousState = vscode.getState()
+
   const state = {
     configs: [],
     templates: [],
@@ -12,7 +15,7 @@
     lastRefresh: 0,
     loading: false,
     refreshing: false,
-    collapsedCards: new Set(), // 记录折叠的卡片 ID
+    collapsedCards: new Set(previousState?.collapsedCards || []), // 从持久化状态恢复
     autoRefreshTimer: null, // 自动刷新定时器
     isVisible: true // 面板是否可见
   }
@@ -676,12 +679,17 @@
     const configId = cardElement.dataset.configId
     const isCollapsed = cardElement.classList.toggle('collapsed')
 
-    // 保存折叠状态
+    // 保存折叠状态到内存
     if (isCollapsed) {
       state.collapsedCards.add(configId)
     } else {
       state.collapsedCards.delete(configId)
     }
+
+    // 持久化到 VSCode Webview 状态(跨会话保留)
+    vscode.setState({
+      collapsedCards: Array.from(state.collapsedCards)
+    })
   }
 
   /**
