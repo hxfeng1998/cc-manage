@@ -2,7 +2,7 @@
   "name": "cc-manage",
   "displayName": "CC Manage",
   "description": "统一管理 Claude/Codex API 配置，支持一键切换、余额监控和配置同步",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "publisher": "cc-manage",
   "author": {
     "name": "feng98"
@@ -64,6 +64,7 @@
   },
   "devDependencies": {
     "@types/glob": "^8.1.0",
+    "@types/lodash.merge": "^4.6.9",
     "@types/mocha": "^10.0.6",
     "@types/node": "^20.11.0",
     "@types/vscode": "^1.94.0",
@@ -74,5 +75,9 @@
     "glob": "^7.2.3",
     "mocha": "^10.4.0",
     "typescript": "^5.4.3"
+  },
+  "dependencies": {
+    "@iarna/toml": "^2.2.5",
+    "lodash.merge": "^4.6.2"
   }
 }
