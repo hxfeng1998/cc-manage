@@ -55,7 +55,7 @@
     codexConfigBase: document.getElementById('codex-config-base')
   }
 
-  window.addEventListener('message', (event) => {
+  window.addEventListener('message', event => {
     const { type, payload } = event.data || {}
 
     if (type === 'state') {
@@ -85,7 +85,7 @@
     }
   })
 
-  Object.values(fields).forEach((field) => {
+  Object.values(fields).forEach(field => {
     if (!field) {
       return
     }
@@ -97,14 +97,14 @@
     }
 
     if (typeof field === 'object') {
-      Object.values(field).forEach((input) => {
+      Object.values(field).forEach(input => {
         input?.addEventListener('input', updatePreviewContent)
         input?.addEventListener('change', updatePreviewContent)
       })
     }
   })
 
-  configForm?.addEventListener('submit', (event) => {
+  configForm?.addEventListener('submit', event => {
     event.preventDefault()
 
     let basePayload
@@ -139,7 +139,7 @@
 
   cancelFormBtn?.addEventListener('click', () => closeForm())
 
-  templateSelector?.addEventListener('change', (event) => {
+  templateSelector?.addEventListener('change', event => {
     const templateName = event.target.value
     if (!templateName) {
       // 选择"自定义"，清空表单
@@ -287,7 +287,10 @@
           const providerName = providerMatch[1]
           // 构建正则表达式匹配 [model_providers.xxx] 部分的 base_url
           const sectionRegex = new RegExp(
-            `\\[model_providers\\.${providerName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\][\\s\\S]*?base_url\\s*=\\s*"([^"]+)"`,
+            `\\[model_providers\\.${providerName.replace(
+              /[.*+?^${}()|[\]\\]/g,
+              '\\$&'
+            )}\\][\\s\\S]*?base_url\\s*=\\s*"([^"]+)"`,
             'i'
           )
           const baseUrlMatch = tomlContent.match(sectionRegex)
@@ -302,7 +305,12 @@
             let inProviderSection = false
 
             for (const line of lines) {
-              if (new RegExp(`\\[model_providers\\.${providerName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\]`, 'i').test(line)) {
+              if (
+                new RegExp(
+                  `\\[model_providers\\.${providerName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\]`,
+                  'i'
+                ).test(line)
+              ) {
                 inProviderSection = true
                 result.push(line)
                 continue
@@ -375,15 +383,13 @@
       fields.name?.focus()
     }
     if (toggleFormBtn) {
-      toggleFormBtn.textContent =
-        visible && state.formMode === 'create' ? '收起表单' : '新增配置'
+      toggleFormBtn.textContent = visible && state.formMode === 'create' ? '收起表单' : '新增配置'
     }
   }
 
   function updateFormTexts(mode, config) {
     if (formTitle) {
-      formTitle.textContent =
-        mode === 'edit' && config ? `编辑 ${config.name} 配置` : '新增配置'
+      formTitle.textContent = mode === 'edit' && config ? `编辑 ${config.name} 配置` : '新增配置'
     }
     if (formSubmitBtn) {
       formSubmitBtn.textContent = mode === 'edit' ? '保存修改' : '保存配置'
@@ -473,7 +479,7 @@
       return
     }
 
-    state.configs.forEach((config) => {
+    state.configs.forEach(config => {
       const item = document.createElement('li')
       item.className = 'config-card'
       item.dataset.configId = config.id
@@ -504,11 +510,15 @@
         const claudeIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
         claudeIcon.setAttribute('viewBox', '0 0 24 24')
         claudeIcon.setAttribute('fill', 'currentColor')
-        claudeIcon.setAttribute('title', config.claude.isActive ? 'Claude (已启用)' : 'Claude (未启用)')
+        claudeIcon.setAttribute(
+          'title',
+          config.claude.isActive ? 'Claude (已启用)' : 'Claude (未启用)'
+        )
         if (config.claude.isActive) {
           claudeIcon.classList.add('active')
         }
-        claudeIcon.innerHTML = '<path d="M11.376 24L10.776 23.544L10.44 22.8L10.776 21.312L11.16 19.392L11.472 17.856L11.76 15.96L11.928 15.336L11.904 15.288L11.784 15.312L10.344 17.28L8.16 20.232L6.432 22.056L6.024 22.224L5.304 21.864L5.376 21.192L5.784 20.616L8.16 17.568L9.6 15.672L10.536 14.592L10.512 14.448H10.464L4.128 18.576L3 18.72L2.496 18.264L2.568 17.52L2.808 17.28L4.704 15.96L9.432 13.32L9.504 13.08L9.432 12.96H9.192L8.4 12.912L5.712 12.84L3.384 12.744L1.104 12.624L0.528 12.504L0 11.784L0.048 11.424L0.528 11.112L1.224 11.16L2.736 11.28L5.016 11.424L6.672 11.52L9.12 11.784H9.504L9.552 11.616L9.432 11.52L9.336 11.424L6.96 9.84L4.416 8.16L3.072 7.176L2.352 6.672L1.992 6.216L1.848 5.208L2.496 4.488L3.384 4.56L3.6 4.608L4.488 5.304L6.384 6.768L8.88 8.616L9.24 8.904L9.408 8.808V8.736L9.24 8.472L7.896 6.024L6.456 3.528L5.808 2.496L5.64 1.872C5.576 1.656 5.544 1.416 5.544 1.152L6.288 0.144001L6.696 0L7.704 0.144001L8.112 0.504001L8.736 1.92L9.72 4.152L11.28 7.176L11.736 8.088L11.976 8.904L12.072 9.168H12.24V9.024L12.36 7.296L12.6 5.208L12.84 2.52L12.912 1.752L13.296 0.840001L14.04 0.360001L14.616 0.624001L15.096 1.32L15.024 1.752L14.76 3.6L14.184 6.504L13.824 8.472H14.04L14.28 8.208L15.264 6.912L16.92 4.848L17.64 4.032L18.504 3.12L19.056 2.688H20.088L20.832 3.816L20.496 4.992L19.44 6.336L18.552 7.464L17.28 9.168L16.512 10.536L16.584 10.632H16.752L19.608 10.008L21.168 9.744L22.992 9.432L23.832 9.816L23.928 10.2L23.592 11.016L21.624 11.496L19.32 11.952L15.888 12.768L15.84 12.792L15.888 12.864L17.424 13.008L18.096 13.056H19.728L22.752 13.272L23.544 13.8L24 14.424L23.928 14.928L22.704 15.528L21.072 15.144L17.232 14.232L15.936 13.92H15.744V14.016L16.848 15.096L18.84 16.896L21.36 19.224L21.48 19.8L21.168 20.28L20.832 20.232L18.624 18.552L17.76 17.808L15.84 16.2H15.72V16.368L16.152 17.016L18.504 20.544L18.624 21.624L18.456 21.96L17.832 22.176L17.184 22.056L15.792 20.136L14.376 17.952L13.224 16.008L13.104 16.104L12.408 23.352L12.096 23.712L11.376 24Z" shape-rendering="optimizeQuality" fill="#D97757"></path>'
+        claudeIcon.innerHTML =
+          '<path d="M11.376 24L10.776 23.544L10.44 22.8L10.776 21.312L11.16 19.392L11.472 17.856L11.76 15.96L11.928 15.336L11.904 15.288L11.784 15.312L10.344 17.28L8.16 20.232L6.432 22.056L6.024 22.224L5.304 21.864L5.376 21.192L5.784 20.616L8.16 17.568L9.6 15.672L10.536 14.592L10.512 14.448H10.464L4.128 18.576L3 18.72L2.496 18.264L2.568 17.52L2.808 17.28L4.704 15.96L9.432 13.32L9.504 13.08L9.432 12.96H9.192L8.4 12.912L5.712 12.84L3.384 12.744L1.104 12.624L0.528 12.504L0 11.784L0.048 11.424L0.528 11.112L1.224 11.16L2.736 11.28L5.016 11.424L6.672 11.52L9.12 11.784H9.504L9.552 11.616L9.432 11.52L9.336 11.424L6.96 9.84L4.416 8.16L3.072 7.176L2.352 6.672L1.992 6.216L1.848 5.208L2.496 4.488L3.384 4.56L3.6 4.608L4.488 5.304L6.384 6.768L8.88 8.616L9.24 8.904L9.408 8.808V8.736L9.24 8.472L7.896 6.024L6.456 3.528L5.808 2.496L5.64 1.872C5.576 1.656 5.544 1.416 5.544 1.152L6.288 0.144001L6.696 0L7.704 0.144001L8.112 0.504001L8.736 1.92L9.72 4.152L11.28 7.176L11.736 8.088L11.976 8.904L12.072 9.168H12.24V9.024L12.36 7.296L12.6 5.208L12.84 2.52L12.912 1.752L13.296 0.840001L14.04 0.360001L14.616 0.624001L15.096 1.32L15.024 1.752L14.76 3.6L14.184 6.504L13.824 8.472H14.04L14.28 8.208L15.264 6.912L16.92 4.848L17.64 4.032L18.504 3.12L19.056 2.688H20.088L20.832 3.816L20.496 4.992L19.44 6.336L18.552 7.464L17.28 9.168L16.512 10.536L16.584 10.632H16.752L19.608 10.008L21.168 9.744L22.992 9.432L23.832 9.816L23.928 10.2L23.592 11.016L21.624 11.496L19.32 11.952L15.888 12.768L15.84 12.792L15.888 12.864L17.424 13.008L18.096 13.056H19.728L22.752 13.272L23.544 13.8L24 14.424L23.928 14.928L22.704 15.528L21.072 15.144L17.232 14.232L15.936 13.92H15.744V14.016L16.848 15.096L18.84 16.896L21.36 19.224L21.48 19.8L21.168 20.28L20.832 20.232L18.624 18.552L17.76 17.808L15.84 16.2H15.72V16.368L16.152 17.016L18.504 20.544L18.624 21.624L18.456 21.96L17.832 22.176L17.184 22.056L15.792 20.136L14.376 17.952L13.224 16.008L13.104 16.104L12.408 23.352L12.096 23.712L11.376 24Z" shape-rendering="optimizeQuality" fill="#D97757"></path>'
         iconsContainer.appendChild(claudeIcon)
       }
 
@@ -521,7 +531,8 @@
         if (config.codex.isActive) {
           codexIcon.classList.add('active')
         }
-        codexIcon.innerHTML = '<path d="M59.7325 56.1915V41.6219C59.7325 40.3948 60.1929 39.4741 61.266 38.8613L90.5592 21.9915C94.5469 19.6912 99.3013 18.6181 104.208 18.6181C122.612 18.6181 134.268 32.8813 134.268 48.0637C134.268 49.1369 134.268 50.364 134.114 51.5911L103.748 33.8005C101.908 32.7274 100.067 32.7274 98.2267 33.8005L59.7325 56.1915ZM128.133 112.937V78.1222C128.133 75.9745 127.212 74.441 125.372 73.3678L86.878 50.9768L99.4538 43.7682C100.527 43.1554 101.448 43.1554 102.521 43.7682L131.814 60.6381C140.25 65.5464 145.923 75.9745 145.923 86.0961C145.923 97.7512 139.023 108.487 128.133 112.935V112.937ZM50.6841 82.2638L38.1083 74.9028C37.0351 74.29 36.5748 73.3693 36.5748 72.1422V38.4025C36.5748 21.9929 49.1506 9.5696 66.1744 9.5696C72.6162 9.5696 78.5962 11.7174 83.6585 15.5511L53.4461 33.0352C51.6062 34.1084 50.6855 35.6419 50.6855 37.7897V82.2653L50.6841 82.2638ZM77.7533 97.9066L59.7325 87.785V66.3146L77.7533 56.193L95.7725 66.3146V87.785L77.7533 97.9066ZM89.3321 144.53C82.8903 144.53 76.9103 142.382 71.848 138.549L102.06 121.064C103.9 119.991 104.821 118.458 104.821 116.31V71.8343L117.551 79.1954C118.624 79.8082 119.084 80.7289 119.084 81.956V115.696C119.084 132.105 106.354 144.529 89.3321 144.529V144.53ZM52.9843 110.33L23.6911 93.4601C15.2554 88.5517 9.58181 78.1237 9.58181 68.0021C9.58181 56.193 16.6365 45.611 27.5248 41.163V76.1299C27.5248 78.2776 28.4455 79.8111 30.2854 80.8843L68.6271 103.121L56.0513 110.33C54.9781 110.943 54.0574 110.943 52.9843 110.33ZM51.2983 135.482C33.9681 135.482 21.2384 122.445 21.2384 106.342C21.2384 105.115 21.3923 103.888 21.5448 102.661L51.7572 120.145C53.5971 121.218 55.4385 121.218 57.2784 120.145L95.7725 97.9081V112.478C95.7725 113.705 95.3122 114.625 94.239 115.238L64.9458 132.108C60.9582 134.408 56.2037 135.482 51.2969 135.482H51.2983ZM89.3321 153.731C107.889 153.731 123.378 140.542 126.907 123.058C144.083 118.61 155.126 102.507 155.126 86.0976C155.126 75.3617 150.525 64.9336 142.243 57.4186C143.01 54.1977 143.471 50.9768 143.471 47.7573C143.471 25.8267 125.68 9.41567 105.129 9.41567C100.989 9.41567 97.0011 10.0285 93.0134 11.4095C86.1112 4.66126 76.6024 0.367188 66.1744 0.367188C47.6171 0.367188 32.1282 13.5558 28.5994 31.0399C11.4232 35.4879 0.380859 51.5911 0.380859 68.0006C0.380859 78.7365 4.98133 89.1645 13.2631 96.6795C12.4963 99.9004 12.036 103.121 12.036 106.341C12.036 128.271 29.8265 144.682 50.3777 144.682C54.5178 144.682 58.5055 144.07 62.4931 142.689C69.3938 149.437 78.9026 153.731 89.3321 153.731Z" fill="currentColor"></path>'
+        codexIcon.innerHTML =
+          '<path d="M59.7325 56.1915V41.6219C59.7325 40.3948 60.1929 39.4741 61.266 38.8613L90.5592 21.9915C94.5469 19.6912 99.3013 18.6181 104.208 18.6181C122.612 18.6181 134.268 32.8813 134.268 48.0637C134.268 49.1369 134.268 50.364 134.114 51.5911L103.748 33.8005C101.908 32.7274 100.067 32.7274 98.2267 33.8005L59.7325 56.1915ZM128.133 112.937V78.1222C128.133 75.9745 127.212 74.441 125.372 73.3678L86.878 50.9768L99.4538 43.7682C100.527 43.1554 101.448 43.1554 102.521 43.7682L131.814 60.6381C140.25 65.5464 145.923 75.9745 145.923 86.0961C145.923 97.7512 139.023 108.487 128.133 112.935V112.937ZM50.6841 82.2638L38.1083 74.9028C37.0351 74.29 36.5748 73.3693 36.5748 72.1422V38.4025C36.5748 21.9929 49.1506 9.5696 66.1744 9.5696C72.6162 9.5696 78.5962 11.7174 83.6585 15.5511L53.4461 33.0352C51.6062 34.1084 50.6855 35.6419 50.6855 37.7897V82.2653L50.6841 82.2638ZM77.7533 97.9066L59.7325 87.785V66.3146L77.7533 56.193L95.7725 66.3146V87.785L77.7533 97.9066ZM89.3321 144.53C82.8903 144.53 76.9103 142.382 71.848 138.549L102.06 121.064C103.9 119.991 104.821 118.458 104.821 116.31V71.8343L117.551 79.1954C118.624 79.8082 119.084 80.7289 119.084 81.956V115.696C119.084 132.105 106.354 144.529 89.3321 144.529V144.53ZM52.9843 110.33L23.6911 93.4601C15.2554 88.5517 9.58181 78.1237 9.58181 68.0021C9.58181 56.193 16.6365 45.611 27.5248 41.163V76.1299C27.5248 78.2776 28.4455 79.8111 30.2854 80.8843L68.6271 103.121L56.0513 110.33C54.9781 110.943 54.0574 110.943 52.9843 110.33ZM51.2983 135.482C33.9681 135.482 21.2384 122.445 21.2384 106.342C21.2384 105.115 21.3923 103.888 21.5448 102.661L51.7572 120.145C53.5971 121.218 55.4385 121.218 57.2784 120.145L95.7725 97.9081V112.478C95.7725 113.705 95.3122 114.625 94.239 115.238L64.9458 132.108C60.9582 134.408 56.2037 135.482 51.2969 135.482H51.2983ZM89.3321 153.731C107.889 153.731 123.378 140.542 126.907 123.058C144.083 118.61 155.126 102.507 155.126 86.0976C155.126 75.3617 150.525 64.9336 142.243 57.4186C143.01 54.1977 143.471 50.9768 143.471 47.7573C143.471 25.8267 125.68 9.41567 105.129 9.41567C100.989 9.41567 97.0011 10.0285 93.0134 11.4095C86.1112 4.66126 76.6024 0.367188 66.1744 0.367188C47.6171 0.367188 32.1282 13.5558 28.5994 31.0399C11.4232 35.4879 0.380859 51.5911 0.380859 68.0006C0.380859 78.7365 4.98133 89.1645 13.2631 96.6795C12.4963 99.9004 12.036 103.121 12.036 106.341C12.036 128.271 29.8265 144.682 50.3777 144.682C54.5178 144.682 58.5055 144.07 62.4931 142.689C69.3938 149.437 78.9026 153.731 89.3321 153.731Z" fill="currentColor"></path>'
         iconsContainer.appendChild(codexIcon)
       }
 
@@ -533,18 +544,23 @@
       header.appendChild(collapseBtn)
       header.appendChild(title)
 
-      // 在 header 中添加圆形进度指示器（收起时可见）
-      if (config.hasStatusConfig && config.lastStatus?.ok) {
+      if (config.hasStatusConfig && config.lastStatus.status === 401) {
+        // 认证过期
+        const authExpired = document.createElement('div')
+        authExpired.className = 'header-status status-critical'
+        authExpired.textContent = '认证过期'
+        header.appendChild(authExpired)
+      } else if (config.hasStatusConfig && config.lastStatus?.ok) {
         const usageTokens = parseFloat(config.lastStatus.usage || 0)
         const balanceTokens = parseFloat(config.lastStatus.balance || 0)
-        const totalTokens = parseFloat(config.lastStatus.total || 0) || (usageTokens + balanceTokens)
+        const totalTokens = parseFloat(config.lastStatus.total || 0) || usageTokens + balanceTokens
 
         // 只有当总量大于0时才显示（避免显示 $0.00/$0.00）
         if (totalTokens > 0) {
           const remainingPercent = (balanceTokens / totalTokens) * 100
 
           const divisor = config.lastStatus.quotaPerUnit || 1000000
-          const formatUSD = (tokens) => {
+          const formatUSD = tokens => {
             if (!tokens) return '$0.00'
             const dollars = parseFloat(tokens) / divisor
             return `$${dollars.toFixed(2)}`
@@ -580,7 +596,9 @@
 
           const balanceText = document.createElement('span')
           balanceText.className = 'usage-balance'
-          balanceText.textContent = `${formatUSD(String(usageTokens))}/${formatUSD(String(totalTokens))}`
+          balanceText.textContent = `${formatUSD(String(usageTokens))}/${formatUSD(
+            String(totalTokens)
+          )}`
 
           headerUsage.appendChild(indicator)
           headerUsage.appendChild(balanceText)
@@ -594,8 +612,7 @@
 
       const endpoints = document.createElement('div')
       endpoints.className = 'endpoint-overview'
-
-      ;['claude', 'codex'].forEach((type) => {
+      ;['claude', 'codex'].forEach(type => {
         const summary = config[type]
         const row = document.createElement('div')
         row.className = 'endpoint-item'
@@ -730,7 +747,10 @@ requires_openai_auth = true`
     const sectionHeader = `[model_providers.${providerName}]`
 
     // 检查是否已存在 [model_providers.xxx] 部分
-    const sectionRegex = new RegExp(`\\[model_providers\\.${providerName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\]`, 'i')
+    const sectionRegex = new RegExp(
+      `\\[model_providers\\.${providerName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\]`,
+      'i'
+    )
     const hasSectionHeader = sectionRegex.test(customToml)
 
     if (hasSectionHeader) {
@@ -812,14 +832,15 @@ requires_openai_auth = true`
     return {
       name,
       website: website || undefined,
-      status: statusUrl || statusAuthorization || statusUserId || statusCookie
-        ? {
-            url: statusUrl || undefined,
-            authorization: statusAuthorization || undefined,
-            userId: statusUserId || undefined,
-            cookie: statusCookie || undefined
-          }
-        : undefined,
+      status:
+        statusUrl || statusAuthorization || statusUserId || statusCookie
+          ? {
+              url: statusUrl || undefined,
+              authorization: statusAuthorization || undefined,
+              userId: statusUserId || undefined,
+              cookie: statusCookie || undefined
+            }
+          : undefined,
       claude,
       codex,
       claudeSettings: claudeSettingsInput?.value || '',
@@ -882,7 +903,7 @@ requires_openai_auth = true`
     // 加载时禁用手动刷新和新增配置按钮
     if (refreshBtn) {
       refreshBtn.disabled = state.loading || state.refreshing
-      refreshBtn.textContent = state.loading ? '加载中…' : (state.refreshing ? '刷新中…' : '刷新')
+      refreshBtn.textContent = state.loading ? '加载中…' : state.refreshing ? '刷新中…' : '刷新'
     }
 
     if (toggleFormBtn) {
@@ -1036,7 +1057,10 @@ requires_openai_auth = true`
 
     const apiKey = typeof data?.OPENAI_API_KEY === 'string' ? data.OPENAI_API_KEY : ''
     previewLock = true
-    setEndpointFields('codex', { baseUrl: fields.codex.baseUrl?.value || '', apiKey })
+    setEndpointFields('codex', {
+      baseUrl: fields.codex.baseUrl?.value || '',
+      apiKey
+    })
     previewLock = false
     updatePreviewContent()
   }
@@ -1055,7 +1079,10 @@ requires_openai_auth = true`
       // 如果第一行是 base_url，提取它的值并更新输入框
       const baseUrl = match[1]
       previewLock = true
-      setEndpointFields('codex', { baseUrl, apiKey: fields.codex.apiKey?.value || '' })
+      setEndpointFields('codex', {
+        baseUrl,
+        apiKey: fields.codex.apiKey?.value || ''
+      })
 
       // 移除第一行 base_url，保留其余作为自定义配置
       const remainingLines = lines.slice(1).join('\n').trim()

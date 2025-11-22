@@ -11,6 +11,7 @@ export type ProviderType = 'claude' | 'codex';
 export interface ProviderStatus {
   fetchedAt: number;
   ok: boolean;
+  status?: number;
   balance?: string;
   usage?: string;
   total?: string;
@@ -787,6 +788,7 @@ export class ConfigManager {
 
       return {
         ok: response.ok,
+        status: response.status,
         fetchedAt: Date.now(),
         balance: normalized.balance,
         usage: normalized.usage,
