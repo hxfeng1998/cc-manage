@@ -5,7 +5,7 @@
 .gitignore
 .vscode-test/**
 src/**
-node_modules/**
+# node_modules/**
 README.md
 CHANGELOG.md
 playwright-report/**
